@@ -1,15 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Order } from "../entities/order.entity";
-import { OrderRepository } from "../repositories/order.repository";
-import { CreateOrderDto } from "../dtos/create_order_dto";
-import { UpdateOrderDto } from "../dtos/update_order_dto";
-import { NotFoundException } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Order } from '../entities/order.entity';
+import { OrderRepository } from '../repositories/order.repository';
+import { CreateOrderDto } from '../dtos/create_order_dto';
+import { UpdateOrderDto } from '../dtos/update_order_dto';
+import { NotFoundException } from '@nestjs/common';
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectRepository(OrderRepository)
-    private readonly orderRepository: OrderRepository
+    private readonly orderRepository: OrderRepository,
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
@@ -22,7 +22,7 @@ export class OrdersService {
   }
 
   async findOne(id: string): Promise<Order> {
-    const order = await this.orderRepository.findOne(id);
+    const order = await this.orderRepository.findOne({ where: { id } });
     if (!order) {
       throw new NotFoundException(`Order with id ${id} not found`);
     }
